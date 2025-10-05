@@ -19,7 +19,7 @@ def _apply_halflife(series: NDArray[np.float64], halflife: np.float32, rounding:
 
     # TODO: Enter your calculation here
     # Implement the exponential decay logic
-    # Hint: Use the formula mentioned in the background sectionies[i] += adstocked_series[i - 1] * np.exp(decay_factor)
+    # Hint: Use the formula mentioned in the background section
 
     return np.round(adstocked_series, rounding).astype(np.float32)
 
