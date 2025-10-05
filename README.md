@@ -28,24 +28,107 @@ By completing this assignment, you will demonstrate:
 ## Setup Instructions
 
 ### Option 1: Local Development (Recommended)
+
+#### Prerequisites
+- Git with Git LFS support
+- Python 3.11+
+- uv (recommended) or pip
+
+> **💡 Windows Users**: For the best experience, we recommend using **WSL2 with Ubuntu** instead of native Windows. WSL2 provides a Linux environment that ensures compatibility with all tools and commands. [Install WSL2](https://docs.microsoft.com/en-us/windows/wsl/install) and use Ubuntu 20.04 or later.
+
+#### Setup Steps
 ```bash
-# Clone the repository
+# Install Git LFS if not already installed
+# On Ubuntu/Debian:
+sudo apt install git-lfs
+# On macOS:
+brew install git-lfs
+# On Windows: Download from https://git-lfs.github.io/
+
+# Initialize Git LFS (one-time setup per machine)
+git lfs install
+
+# Clone the repository with LFS files
 git clone https://github.com/esdevop/mle-tech-assessment-jun.git
 cd mle-tech-assessment-jun
 
-# Set up environment using uv (preferred)
-uv sync
+# Ensure LFS files are pulled (data files)
+git lfs pull
+
+# Set up Python environment using uv (preferred)
+uv sync --group dev
 
 # Alternative: using pip
-pip install -e .
+pip install -e ".[dev]"
+
+# Verify data files are present
+ls -la data/raw/ data/processed/
 ```
 
 ### Option 2: Google Colab
+
 ```python
-# In a Colab cell
+# In a Colab cell - Install and setup Git LFS
+!curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+!sudo apt-get install git-lfs
+
+# Initialize Git LFS
+!git lfs install
+
+# Clone the repository with LFS support
 !git clone https://github.com/esdevop/mle-tech-assessment-jun.git
 %cd mle-tech-assessment-jun
-!pip install -e .
+
+# Pull LFS files (data files)
+!git lfs pull
+
+# Install Python dependencies
+!pip install -e ".[dev]"
+
+# Verify data files are downloaded
+!ls -la data/raw/ data/processed/
+!head -5 data/raw/raw_data.csv
+```
+
+#### Troubleshooting Git LFS in Colab
+If you encounter LFS issues in Colab, you can manually download the data files:
+```python
+# Alternative: Direct download if LFS fails
+import requests
+import os
+
+# Create directories
+os.makedirs("data/raw", exist_ok=True)
+os.makedirs("data/processed", exist_ok=True)
+
+# Download data files directly (replace with actual raw file URLs if needed)
+# Note: This is a fallback - LFS method above is preferred
+print("If LFS setup fails, contact the assessment administrator for direct data file access")
+```
+
+### Verification
+
+After setup, verify everything is working correctly:
+
+```bash
+# Check that data files exist and have content
+head -5 data/raw/raw_data.csv
+head -5 data/processed/processed_data.csv
+
+# Run a quick test to ensure environment is ready
+python -c "import numpy as np; import pandas as pd; import pytest; print('✅ All dependencies available')"
+
+# Test that the function can be imported
+python -c "from app.utils.transformations import _apply_halflife; print('✅ Function import successful')"
+```
+
+**Expected output for data files:**
+- `data/raw/raw_data.csv` should show: `date_week,tv_ad_executions`
+- `data/processed/processed_data.csv` should show: `date_week,tv_ad_executions_adstock`
+
+If data files show Git LFS pointer content instead of actual data, run:
+```bash
+git lfs pull
 ```
 
 ## Task Description
