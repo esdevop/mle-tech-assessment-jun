@@ -9,14 +9,13 @@ Welcome to the Junior MLE Technical Assessment! This assignment evaluates your a
 **Adstock** (or advertising carryover) is a critical concept in marketing analytics that captures how advertising effects persist over time. When a TV advertisement airs, its impact doesn't disappear immediately—it decays exponentially over subsequent periods.
 
 The mathematical formula for adstock transformation is:
+```math
+x'_t = x_t + x_{t-1}\cdot \lambda
 ```
-adstock[t] = media[t] + adstock[t-1] * exp(ln(0.5) / halflife)
-```
-
 Where:
-- `media[t]` is the media exposure at time t
-- `halflife` determines how quickly the effect decays (smaller = faster decay)
-- The decay factor `exp(ln(0.5) / halflife)` ensures that after `halflife` periods, the carryover effect is reduced by 50%
+- $x_t$ is the media exposure (non-transformed) at time t
+- The decay factor $\lambda = \exp(\ln(0.5) / \tau)$ ensures that after $\tau$ periods, the carryover effect is reduced by 50%
+- $\tau$ is a half-life parameter
 
 ## Assignment Objectives
 
